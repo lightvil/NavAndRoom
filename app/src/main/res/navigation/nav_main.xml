@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main.xml"
+    app:startDestination="@id/firstTabFragment">
+
+    <fragment
+        android:id="@+id/firstTabFragment"
+        android:name="kr.pe.lightvil.fragments.FirstTabFragment"
+        android:label="first_tab_fragment"
+        tools:layout="@layout/fragment_first_tab" />
+    <fragment
+        android:id="@+id/secondTabFragment"
+        android:name="kr.pe.lightvil.fragments.SecondTabFragment"
+        android:label="fragment_second_tab"
+        tools:layout="@layout/fragment_second_tab" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="kr.pe.lightvil.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
+</navigation>
