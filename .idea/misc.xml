@@ -3,10 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_first_tab_vector.xml" value="0.2046875" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.20625" />
+        <entry key="app/src/main/res/drawable/ic_person_vector.xml" value="0.20625" />
+        <entry key="app/src/main/res/drawable/ic_second_tab_vector.xml" value="0.2046875" />
+        <entry key="app/src/main/res/drawable/ic_settings_vector.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.171875" />
         <entry key="app/src/main/res/layout/first_tab_fragment.xml" value="0.1734375" />
+        <entry key="app/src/main/res/layout/fragment_first_tab.xml" value="0.190625" />
         <entry key="app/src/main/res/layout/fragment_second_tab.xml" value="0.1734375" />
+        <entry key="app/src/main/res/layout/item_dialog.xml" value="0.33" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation.xml" value="0.1921875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.20625" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1921875" />
       </map>
     </option>
