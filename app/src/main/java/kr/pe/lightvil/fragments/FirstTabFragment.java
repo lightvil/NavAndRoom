@@ -44,7 +44,7 @@ public class FirstTabFragment extends Fragment {
                     for(Map.Entry<CallLog, List<DialogMessage>> entry : callLogListMap.entrySet()) {
                         CallLog key = entry.getKey();
                         List<DialogMessage> messages = entry.getValue();
-                        binding.textViewRecipient.setText("대와:");
+                        binding.textViewRecipient.setText("대화:");
                         //binding.recyclerViewDialog.addView();
                         RecyclerView.Adapter adapter = binding.recyclerViewDialog.getAdapter();
                         if (adapter == null) {

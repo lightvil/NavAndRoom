@@ -19,6 +19,10 @@ import kr.pe.lightvil.models.DialogMessage;
 //
 @Dao
 public interface CallLogDAO {
+
+    @Query("SELECT COUNT(*) FROM CALL_LOG")
+    int getLogCount();
+
     @Query("SELECT * FROM CALL_LOG")
     List<CallLog> findAll();
 
@@ -49,7 +53,11 @@ public interface CallLogDAO {
     //
     @Transaction
     default Long insertCallLogWithMessages(CallLog log, List<DialogMessage> messages) {
+        Long callLogId = insertCallLog(log);
         if (messages != null && messages.size() > 0) {
+            for(DialogMessage message : messages) {
+                message.setCallLogId(callLogId);
+            }
             insertMessages(messages);
             log.setMessageCount(messages.size());
         }
@@ -76,7 +84,4 @@ public interface CallLogDAO {
             delete(callLog);
         }
     }
-
-
-
 }

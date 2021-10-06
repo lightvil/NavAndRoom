@@ -17,6 +17,10 @@ public class CallLogRepository {
         this.callLogDAO = EyePhoneDatabase.getDatabase(context).getCallLogDAO();
     }
 
+    public int getLogCount() {
+        return this.callLogDAO.getLogCount();
+    }
+
     public List<CallLog> findAllCallLogs() {
         return callLogDAO.findAll();
     }
@@ -46,7 +50,4 @@ public class CallLogRepository {
             callLog.setId(newId);
         });
     }
-
-
-
 }

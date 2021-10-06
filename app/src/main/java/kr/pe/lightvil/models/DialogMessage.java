@@ -74,4 +74,24 @@ public class DialogMessage {
     public static DialogMessage create(Long callLogId, Integer seq, MESSAGE_TYPE messageType, Timestamp createdAt, String message) {
         return new DialogMessage(callLogId, seq, messageType, createdAt, message);
     }
+
+    public void setCallLogId(Long callLogId) {
+        this.callLogId = callLogId;
+    }
+
+    public Long getCallLogId() {
+        return this.callLogId;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public MESSAGE_TYPE getMessageType() {
+        return this.messageType;
+    }
 }
