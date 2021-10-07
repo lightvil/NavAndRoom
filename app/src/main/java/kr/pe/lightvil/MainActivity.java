@@ -5,15 +5,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.room.Room;
 
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import kr.pe.lightvil.daos.CallLogDAO;
 import kr.pe.lightvil.databinding.ActivityMainBinding;
-import kr.pe.lightvil.models.EyePhoneDatabase;
+import kr.pe.lightvil.repositories.CallLogRepo;
 import kr.pe.lightvil.repositories.CallLogRepository;
 
 public class MainActivity extends AppCompatActivity {
