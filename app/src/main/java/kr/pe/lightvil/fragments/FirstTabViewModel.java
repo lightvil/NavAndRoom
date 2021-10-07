@@ -31,7 +31,6 @@ public class FirstTabViewModel extends AndroidViewModel {
         super(application);
         repository = new CallLogRepository(application);
 
-
         int count = repository.getLogCount();
         Log.i(LOG_TAG, "LOG COUNT=" + count);
 
@@ -56,6 +55,7 @@ public class FirstTabViewModel extends AndroidViewModel {
                 new Timestamp(Calendar.getInstance().getTimeInMillis()),
                 "메시지"
         ));
+        repository.insert(log, messages);
     }
 
     public LiveData<Map<CallLog, List<DialogMessage>>> getCallLog() {

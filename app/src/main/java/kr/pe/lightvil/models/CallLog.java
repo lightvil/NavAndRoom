@@ -61,15 +61,29 @@ public class CallLog implements Parcelable {
         this.messageCount = messageCount;
     }
 
+    //
+    // Getters
+    //
     public Long getId() {
         return id;
     }
-    public void setId(long newId) {
-        this.id = newId;
+    public String getName() { return this.name; }
+    public String getContactId() { return this.contactId; }
+    public Timestamp getStartedAt() { return this.startedAt; }
+    public Timestamp getEndedAt() { return this.endedAt; }
+    public Boolean getMissed() { return this.missed; }
+    public Integer getMessageCount() {
+        return this.messageCount;
     }
 
-    public int getMessageCount() {
-        return messageCount;
+    public void setId(Long newId) { this.id = newId; }
+    public void  getName(String newName) { this.name = newName; }
+    public void getContactId(String newContactId) { this.contactId = newContactId; }
+    public void getStartedAt(Timestamp newStartedAt) { this.startedAt = newStartedAt; }
+    public void getEndedAt(Timestamp newEndedAt) { this.endedAt = newEndedAt; }
+    public void getMissed(Boolean newMissed) { this.missed = newMissed; }
+    public void getMessageCount(Integer newMessageCount) {
+        this.messageCount = newMessageCount;
     }
 
     public void setMessageCount(int messageCount) {
@@ -77,6 +91,9 @@ public class CallLog implements Parcelable {
         this.messageCount = messageCount;
     }
 
+    //
+    // Factory methods...
+    //
     public static CallLog create(
             Long id, String name, String contactId,
             Boolean missed,
@@ -86,7 +103,9 @@ public class CallLog implements Parcelable {
         return new CallLog(id, name, contactId, missed, startedAt, endedAt, messageCount);
     }
 
-
+    //
+    // For Parcelable interface
+    //
     public static final Creator<CallLog> CREATOR = new Creator<CallLog>() {
         @Override
         public CallLog createFromParcel(Parcel source) {
@@ -122,7 +141,6 @@ public class CallLog implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {

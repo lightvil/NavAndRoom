@@ -28,6 +28,7 @@ public abstract  class EyePhoneDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             EyePhoneDatabase.class, "word_database")
+                            .allowMainThreadQueries() // TODO 나중에 빼야 한다.
                             .build();
                 }
             }
@@ -35,9 +36,9 @@ public abstract  class EyePhoneDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    protected CallLogDAO callLogDAO;
+    public abstract CallLogDAO callLogDAO();
 
     public CallLogDAO getCallLogDAO() {
-        return callLogDAO;
+        return this.callLogDAO();
     }
 }

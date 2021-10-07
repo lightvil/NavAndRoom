@@ -33,7 +33,7 @@ public interface CallLogDAO {
     // JOIN은 Map 형태로 받아온다.
     //  CallLog 하나에 DialogMessage 여러개의 형식
     //
-    @Query("SELECT * FROM CALL_LOG JOIN MESSAGES ON CALL_LOG.ID == MESSAGES.CALL_LOG_ID WHERE CALL_LOG.ID = id")
+    @Query("SELECT * FROM CALL_LOG JOIN MESSAGES ON CALL_LOG.ID == MESSAGES.CALL_LOG_ID WHERE CALL_LOG.ID = :id")
     Map<CallLog, List<DialogMessage>> findWithMessagesById(Long id);
 
     @Query("SELECT * FROM MESSAGES WHERE CALL_LOG_ID = :callLogId ORDER BY SEQ")
@@ -71,9 +71,11 @@ public interface CallLogDAO {
     //
     @Delete
     void delete(CallLog callLog);
-    @Delete
+    //
+    // SEE : https://stackoverflow.com/questions/47538857/android-room-delete-with-parameters
+    //
     @Query("DELETE FROM MESSAGES WHERE CALL_LOG_ID = :callLogId")
-    void deleteMessagesByCallLogId(Long callLogId);
+    int deleteMessagesByCallLogId(Long callLogId);
 
     // 개별 대화 삭제는 없다.
     // CallLog 단위로 Transaction으로 묶어 삭제
