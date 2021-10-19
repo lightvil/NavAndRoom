@@ -7,16 +7,16 @@
 
     <fragment
         android:id="@+id/firstTabFragment"
-        android:name="kr.pe.lightvil.fragments.FirstTabFragment"
+        android:name="com.cydinfo.roomandnav.fragments.FirstTabFragment"
         android:label="first_tab_fragment"
         tools:layout="@layout/fragment_first_tab" />
     <fragment
         android:id="@+id/secondTabFragment"
-        android:name="kr.pe.lightvil.fragments.SecondTabFragment"
+        android:name="com.cydinfo.roomandnav.fragments.SecondTabFragment"
         android:label="fragment_second_tab"
         tools:layout="@layout/fragment_second_tab" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="kr.pe.lightvil.fragments.SettingsFragment"
+        android:name="com.cydinfo.roomandnav.fragments.SettingsFragment"
         android:label="SettingsFragment" />
 </navigation>
