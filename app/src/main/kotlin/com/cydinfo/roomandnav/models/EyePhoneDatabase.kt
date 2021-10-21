@@ -14,11 +14,11 @@ import java.util.concurrent.Executors
 
 @TypeConverters(EyePhoneTypeConverters::class, CallLogMessage.MESSAGE_TYPE.MESSAGE_TYPE_CONVERTER::class)
 abstract class EyePhoneDatabase : RoomDatabase() {
-    private val LOG_TAG = "CallLogAdapter"
 
     abstract fun callLogDao() : CallLogDao
     companion object {
-        private val LOG_TAG = "CallLogAdapter.Companion"
+        const val NUMBER_OF_THREADS = 4
+        const val LOG_TAG = "CallLogAdapter"
         private var instance : EyePhoneDatabase? = null
         fun getInstance(context : Context) : EyePhoneDatabase? {
             Log.i(LOG_TAG, "getInstance()")
@@ -28,7 +28,7 @@ abstract class EyePhoneDatabase : RoomDatabase() {
                             context.applicationContext,
                             EyePhoneDatabase::class.java,
                             "eyephone"
-                    ).build();
+                    ).allowMainThreadQueries().build();
                     return instance;
                 }
             } else {
@@ -37,7 +37,6 @@ abstract class EyePhoneDatabase : RoomDatabase() {
         }
     }
 
-    private val NUMBER_OF_THREADS = 4
     private val databaseWriteExecutor: ExecutorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS)
     open fun executeWrite(runnble: Runnable?) {
         databaseWriteExecutor.execute(runnble)

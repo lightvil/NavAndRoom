@@ -6,7 +6,7 @@ import com.cydinfo.roomandnav.models.CallLogMessage
 
 @Dao
 interface CallLogDao {
-    @Query("SELECT * FROM CALL_LOG ORDER BY ID DESC LIMIT :pageSize OFFSET :page * :pageSize")
+    @Query("SELECT * FROM CALL_LOGS ORDER BY ID DESC LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
     fun getCallLogs(page : Int, pageSize : Int): List<CallLog>
 
     @Query("SELECT * FROM MESSAGES WHERE CALL_LOG_ID = :callLogId ORDER BY CREATED_AT LIMIT :pageSize OFFSET :page * :pageSize")
@@ -15,6 +15,7 @@ interface CallLogDao {
     //
     // 개별 테이블의 인서트를 위한 것...
     //
+    @Transaction
     @Insert
     fun insertCallLog(log: CallLog?): Long
 
@@ -26,16 +27,17 @@ interface CallLogDao {
     //   대화(통화)가 완료되면 한꺼번에 넣을 수 있도록 할 수 있을 것 같다.
     //
     @Transaction
-    fun insertCallLogWithMessages(log: CallLog, messages: List<CallLogMessage>?): Long? {
+    fun insertCallLogWithMessages(log: CallLog, messages: List<CallLogMessage>?): Long {
         if (messages != null) {
             log.messageCount = messages.size
         } else {
             log.messageCount = 0;
         }
         val callLogId = insertCallLog(log)
+        log.id = callLogId
         if (messages != null && messages.isNotEmpty()) {
             for (i: Int in 1..messages.size) {
-                messages[i].callLogId = callLogId;
+                messages[i].callLogId = callLogId
             }
             insertMessages(messages)
         }
@@ -46,6 +48,7 @@ interface CallLogDao {
     //
     // 개별 테이블에서 삭제...
     //
+    @Transaction
     @Delete
     fun delete(callLog: CallLog?)
 

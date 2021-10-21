@@ -6,18 +6,21 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.sql.Timestamp
-import java.util.*
+import java.util.Calendar
 
 import com.cydinfo.utils.readTimestamp
 import com.cydinfo.utils.readTimestampNullable
 import com.cydinfo.utils.writeTimestamp
 import com.cydinfo.utils.writeTimestampNullable
+import com.cydinfo.utils.format
 
-@Entity(tableName = "CALL_LOG")
+import java.text.SimpleDateFormat
+
+@Entity(tableName = "CALL_LOGS")
 class CallLog() : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ID")
-    var id : Long? = null
+    var id : Long = NEW_ID
 
     @ColumnInfo(name = "NAME")
     var name: String? = null
@@ -37,8 +40,32 @@ class CallLog() : Parcelable {
     @ColumnInfo(name = "ENDED_AT")
     var endedAt: Timestamp? = null
 
+//    constructor(name : String, contactId : String?, missed : Boolean) : this() {
+//        id = -1
+//        this.name = name
+//        this.contactId = contactId
+//        this.missed = missed
+//        this.messageCount = 0
+//        this.startedAt = Timestamp(Calendar.getInstance().timeInMillis)
+//        this.endedAt = if (missed) this.startedAt else null
+//    }
+
+    override fun toString(): String {
+        val sd = SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS")
+        return StringBuilder()
+            .append("{")
+            .append("id:").append(id)
+            .append(" ,name:").append(if (name == null) "null" else "\"$name\"")
+            .append(" ,contactId:").append(if (contactId == null) "null" else "\"$contactId\"")
+            .append(" ,missed:").append(missed)
+            .append(" ,messageCount:").append(messageCount)
+            .append(" ,startedAt:").append("\"" + startedAt.format() + "\"")
+            .append(" ,endedAt:").append(if (endedAt != null) "\"" + endedAt!!.format() + "\"" else "null")
+            .append("}").toString()
+    }
+
     constructor(parcel: Parcel) : this() {
-        id = parcel.readValue(Long::class.java.classLoader) as Long
+        id = parcel.readLong();
         name = parcel.readString()
         contactId = parcel.readString()
         missed = parcel.readByte() != 0.toByte()
@@ -48,7 +75,7 @@ class CallLog() : Parcelable {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(id)
+        parcel.writeLong(id)
         parcel.writeString(name)
         parcel.writeString(contactId)
         parcel.writeByte(if (missed) 1 else 0)
@@ -62,6 +89,8 @@ class CallLog() : Parcelable {
     }
 
     companion object CREATOR : Parcelable.Creator<CallLog> {
+        const val NEW_ID : Long = 0
+
         override fun createFromParcel(parcel: Parcel): CallLog {
             return CallLog(parcel)
         }
@@ -69,5 +98,34 @@ class CallLog() : Parcelable {
         override fun newArray(size: Int): Array<CallLog?> {
             return arrayOfNulls(size)
         }
+
+        fun missedCall(name : String, contactId : String?, startedAtOrNull : Timestamp?) : CallLog {
+            var newCallLog = CallLog()
+
+            newCallLog.id = NEW_ID
+            newCallLog.name = name
+            newCallLog.contactId = contactId
+            newCallLog.missed = true
+            newCallLog.messageCount = 0
+            (startedAtOrNull?: Timestamp(Calendar.getInstance().timeInMillis)).also { newCallLog.startedAt = it }
+            newCallLog.endedAt = newCallLog.startedAt
+
+            return newCallLog
+        }
+
+        fun newCall(name : String, contactId : String?, missed : Boolean, messageCount : Int, startedAt : Timestamp) : CallLog {
+            var newCallLog = CallLog()
+            newCallLog.id = NEW_ID
+            newCallLog.name = name
+            newCallLog.contactId = contactId
+            newCallLog.missed = missed
+            newCallLog.messageCount = messageCount
+            newCallLog.startedAt = startedAt
+            newCallLog.endedAt = Timestamp(Calendar.getInstance().timeInMillis)
+
+            return newCallLog
+        }
+
+
     }
 }

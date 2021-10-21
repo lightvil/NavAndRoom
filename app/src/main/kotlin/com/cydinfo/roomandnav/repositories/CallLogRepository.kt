@@ -10,10 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import com.cydinfo.roomandnav.daos.CallLogDao
 
 class CallLogRepository(val context: Context)  {
-    private val LOG_TAG = "CallLogRepository"
 
     companion object {
-        private val LOG_TAG = "CallLogRepository.Companion"
+        const val LOG_TAG = "CallLogRepository"
 
         private var instance : CallLogRepository? = null
         fun getInstance(context : Context) : CallLogRepository? {
@@ -33,6 +32,7 @@ class CallLogRepository(val context: Context)  {
     private val  dao : CallLogDao by lazy { EyePhoneDatabase.getInstance(context)!!.callLogDao() }
 
     fun getCallLogs(query : String) : Flow<PagingData<CallLog>> {
+        Log.i(LOG_TAG, "getCallLogs(): query=$query")
         return Pager(
                 config = PagingConfig(pageSize = 10),
                 pagingSourceFactory = { CallLogPagingSource(dao, query) }
@@ -40,6 +40,7 @@ class CallLogRepository(val context: Context)  {
     }
 
     fun getMessageByCallLogId(callLogId: Long) : Flow<PagingData<CallLogMessage>> {
+        Log.i(LOG_TAG, "getMessageByCallLogId(): query=$callLogId")
         return Pager(
                 config = PagingConfig(pageSize = 10),
                 pagingSourceFactory = { CallLogMessagePagingSource(dao, callLogId) }
@@ -47,16 +48,21 @@ class CallLogRepository(val context: Context)  {
     }
 
     suspend fun insert(callLog: CallLog) : Long {
-        val newId: Long = dao.insertCallLog(callLog)
+        Log.i(LOG_TAG, "insert(): callLog=$callLog")
+        val newId = dao.insertCallLog(callLog)
         callLog.id = newId
         return newId
     }
 
-    suspend fun insert(callLog: CallLog, messages : List<CallLogMessage>) : Long {
-        return dao.insertCallLogWithMessages(callLog, messages)!!
+    suspend fun insert(callLog: CallLog, messages : List<CallLogMessage>?) : Long {
+        Log.i(LOG_TAG, "insert(): callLog=$callLog")
+        val newId = dao.insertCallLogWithMessages(callLog, messages)
+        callLog.id = newId
+        return newId
     }
 
     suspend fun delete(callLog: CallLog) {
+        Log.i(LOG_TAG, "delete(): callLog=$callLog")
         dao.deleteCallLogAndMessages(callLog)
     }
 }
