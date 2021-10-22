@@ -7,10 +7,16 @@ import com.cydinfo.roomandnav.models.CallLogMessage
 @Dao
 interface CallLogDao {
     @Query("SELECT * FROM CALL_LOGS ORDER BY ID DESC LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
-    fun getCallLogs(page : Int, pageSize : Int): List<CallLog>
+    fun getCallLogsWithPaging(page : Int, pageSize : Int): List<CallLog>
+
+    @Query("SELECT * FROM CALL_LOGS ORDER BY ID DESC")
+    fun getCallLogs(): List<CallLog>
 
     @Query("SELECT * FROM MESSAGES WHERE CALL_LOG_ID = :callLogId ORDER BY CREATED_AT LIMIT :pageSize OFFSET :page * :pageSize")
-    fun getMessagesByCallLogId(callLogId: Long, page : Int, pageSize : Int): List<CallLogMessage>
+    fun getMessagesByCallLogIdWithPaging(callLogId: Long, page : Int, pageSize : Int): List<CallLogMessage>
+
+    @Query("SELECT * FROM MESSAGES WHERE CALL_LOG_ID = :callLogId ORDER BY CREATED_AT")
+    fun getMessagesByCallLogId(callLogId: Long): List<CallLogMessage>
 
     //
     // 개별 테이블의 인서트를 위한 것...
@@ -19,6 +25,7 @@ interface CallLogDao {
     @Insert
     fun insertCallLog(log: CallLog?): Long
 
+    @Transaction
     @Insert
     fun insertMessages(messages: List<CallLogMessage>?)
 
@@ -36,8 +43,8 @@ interface CallLogDao {
         val callLogId = insertCallLog(log)
         log.id = callLogId
         if (messages != null && messages.isNotEmpty()) {
-            for (i: Int in 1..messages.size) {
-                messages[i].callLogId = callLogId
+            for(message in messages) {
+                message.callLogId = callLogId
             }
             insertMessages(messages)
         }

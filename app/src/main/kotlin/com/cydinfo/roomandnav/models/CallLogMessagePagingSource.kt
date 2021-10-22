@@ -22,7 +22,7 @@ class CallLogMessagePagingSource(private val dao : CallLogDao, val callLogId : L
         val page = params.key ?: 1
         val pageSize = params.loadSize
         return try {
-            val items = dao.getMessagesByCallLogId(callLogId, page, pageSize)
+            val items = dao.getMessagesByCallLogIdWithPaging(callLogId, page, pageSize)
             Log.i(LOG_TAG, "load(): items.size=" + items.size)
             for (item in items) {
                 Log.i(LOG_TAG, "\titem==>$item")

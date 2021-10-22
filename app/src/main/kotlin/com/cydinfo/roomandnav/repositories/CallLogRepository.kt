@@ -31,20 +31,30 @@ class CallLogRepository(val context: Context)  {
 
     private val  dao : CallLogDao by lazy { EyePhoneDatabase.getInstance(context)!!.callLogDao() }
 
-    fun getCallLogs(query : String) : Flow<PagingData<CallLog>> {
-        Log.i(LOG_TAG, "getCallLogs(): query=$query")
+    fun getCallLogsWithPaging(query : String) : Flow<PagingData<CallLog>> {
+        Log.i(LOG_TAG, "getCallLogsWithPaging(): query=$query")
         return Pager(
-                config = PagingConfig(pageSize = 10),
+                config = PagingConfig(pageSize = 5),
                 pagingSourceFactory = { CallLogPagingSource(dao, query) }
         ).flow
     }
 
-    fun getMessageByCallLogId(callLogId: Long) : Flow<PagingData<CallLogMessage>> {
-        Log.i(LOG_TAG, "getMessageByCallLogId(): query=$callLogId")
+    fun getCallLogs(query : String) : List<CallLog> {
+        Log.i(LOG_TAG, "getMessageByCallLogId(): query=$query")
+        return dao.getCallLogs()
+    }
+
+    fun getMessageByCallLogIdWithPaging(callLogId: Long) : Flow<PagingData<CallLogMessage>> {
+        Log.i(LOG_TAG, "getMessageByCallLogIdWithPaging(): query=$callLogId")
         return Pager(
-                config = PagingConfig(pageSize = 10),
+                config = PagingConfig(pageSize = 5),
                 pagingSourceFactory = { CallLogMessagePagingSource(dao, callLogId) }
         ).flow
+    }
+
+    fun getMessageByCallLogId(callLogId: Long) : List<CallLogMessage> {
+        Log.i(LOG_TAG, "getMessageByCallLogId(): query=$callLogId")
+        return dao.getMessagesByCallLogId(callLogId)
     }
 
     suspend fun insert(callLog: CallLog) : Long {

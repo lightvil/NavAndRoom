@@ -28,7 +28,7 @@ class CallLogPagingSource(private val dao : CallLogDao, private val query : Stri
         val pageSize = params.loadSize
         return try {
             Log.i(LOG_TAG, "load(): CALL DAO.getCallLogs(page=$page, pageSize=$pageSize)")
-            val items = dao.getCallLogs(page, pageSize)
+            val items = dao.getCallLogsWithPaging(page, pageSize)
             Log.i(LOG_TAG, "load(): items.size=" + items.size)
             for (item in items) {
                 Log.i(LOG_TAG, "\titem==>$item")

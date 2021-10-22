@@ -1,7 +1,6 @@
 package com.cydinfo.roomandnav.fragments
 
 import android.app.Application
-import android.telecom.Call
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.paging.PagingData
@@ -16,11 +15,15 @@ class CallLogViewModel(application: Application) : AndroidViewModel(application)
     var repository: CallLogRepository? = CallLogRepository.getInstance(application)
     private var callLogs: Flow<PagingData<CallLog>>? = null
 
-    fun getCallLogs(query : String): Flow<PagingData<CallLog>>? {
+    fun getCallLogsWithPaing(query : String): Flow<PagingData<CallLog>>? {
         Log.i(LOG_TAG, "getCallLogs(): repository is null? ==> " + (repository == null))
         Log.i(LOG_TAG, "getCallLogs(): query=$query")
-        callLogs = repository?.getCallLogs(query = query)
+        callLogs = repository?.getCallLogsWithPaging(query = query)
         return callLogs
+    }
+
+    fun getMessagesByCallLogId(callLogId : Long) : List<CallLogMessage>? {
+        return repository?.getMessageByCallLogId(callLogId)
     }
 
     suspend fun insert(callLog : CallLog, messages : List<CallLogMessage>) {

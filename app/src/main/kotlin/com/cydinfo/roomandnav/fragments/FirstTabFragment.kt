@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.cydinfo.roomandnav.databinding.FragmentFirstTabBinding
-import com.cydinfo.roomandnav.R
 import com.cydinfo.roomandnav.models.CallLog
 import com.cydinfo.roomandnav.models.CallLogMessage
 
@@ -41,7 +40,7 @@ class FirstTabFragment : Fragment() {
         // 조회시작...
         lifecycleScope.launch {
             Log.i(LOG_TAG, "RETREIVING CALL LOGS")
-            mViewModel?.getCallLogs("")?.collectLatest {
+            mViewModel?.getCallLogsWithPaing("")?.collectLatest {
                 Log.i(LOG_TAG, "getCallLogs() item==> $it")
                 adapter.submitData(it)
             }
@@ -49,7 +48,18 @@ class FirstTabFragment : Fragment() {
 
         lifecycleScope.launch {
             Log.i(LOG_TAG, "INSERTING A NEW CALL LOG")
-            mViewModel?.insert(CallLog.missedCall("최상환", null, null), ArrayList<CallLogMessage>())
+            var messages : List<CallLogMessage> = ArrayList<CallLogMessage>()
+            //
+            messages = messages + CallLogMessage.sentMessage("안녕하세요?")
+            messages = messages + CallLogMessage.receivedMessage("네, 안녕하세요?")
+            messages = messages + CallLogMessage.sentMessage("오늘은 날씨가 춥네요.")
+            messages = messages + CallLogMessage.sentMessage("내일 오전 10시에 스타벅스에서 보기로 한 거 맞죠?")
+            messages = messages + CallLogMessage.receivedMessage("네. 옷 든든하게 입고 나오셔야 하겠네요.")
+            messages = messages + CallLogMessage.sentMessage("그럼, 내일 오전 10시에 뵐께요.")
+            for(message in messages) {
+                Log.i(LOG_TAG, message.toString())
+            }
+            mViewModel?.insert(CallLog.missedCall("최상환", null, null), messages)
         }
 
         return binding.root

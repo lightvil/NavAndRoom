@@ -103,16 +103,12 @@ class CallLogMessage() : Parcelable {
             return arrayOfNulls(size)
         }
 
-        fun receivedMessage(message : String, createdAtOrNull : Timestamp?) : CallLogMessage {
-            var receivedMessage = CallLogMessage()
+        fun receivedMessage(message : String) : CallLogMessage {
+            return receivedMessage(null, message, null)
+        }
 
-            receivedMessage.callLogId = -1
-            receivedMessage.messageType = MESSAGE_TYPE.RECEIVED
-            //sentMessage.createdAt = if (startedAtOrNull != null) startedAtOrNull else Timestamp(Calendar.getInstance().timeInMillis)
-            receivedMessage.createdAt = createdAtOrNull ?: Timestamp(Calendar.getInstance().timeInMillis)
-            receivedMessage.message = message
-
-            return receivedMessage
+        fun receivedMessage(message : String, createdAt : Timestamp) : CallLogMessage {
+            return receivedMessage(null, message, createdAt)
         }
 
         fun receivedMessage(callLog : CallLog?, message : String, createdAtOrNull : Timestamp?) : CallLogMessage {
@@ -127,16 +123,12 @@ class CallLogMessage() : Parcelable {
             return receivedMessage
         }
 
-        fun sentMessage(message : String, createdAtOrNull : Timestamp?) : CallLogMessage {
-            var sentMessage = CallLogMessage()
+        fun sentMessage(message : String) : CallLogMessage {
+            return sentMessage(null, message, null)
+        }
 
-            sentMessage.callLogId = -1
-            sentMessage.messageType = MESSAGE_TYPE.SENT
-            //sentMessage.createdAt = if (startedAtOrNull != null) startedAtOrNull else Timestamp(Calendar.getInstance().timeInMillis)
-            sentMessage.createdAt = createdAtOrNull ?: Timestamp(Calendar.getInstance().timeInMillis)
-            sentMessage.message = message
-
-            return sentMessage
+        fun sentMessage(message : String, createdAt : Timestamp) : CallLogMessage {
+            return sentMessage(null, message, createdAt)
         }
 
         fun sentMessage(callLog : CallLog?, message : String, createdAtOrNull : Timestamp?) : CallLogMessage {
